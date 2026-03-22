@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Boxicons for elegant minimalist icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body class="theme-dark">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app-container" style="display: none;">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class='bx bx-hive logomark'></i>
+                <h2>EmpManage</h2>
+            </div>
+            
+            <div class="user-profile">
+                <div class="avatar"><i class='bx bx-user'></i></div>
+                <div class="user-info">
+                    <p class="greeting">Welcome,</p>
+                    <h3 id="sidebar-username">Admin</h3>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-target="dashboard">
+                    <i class='bx bx-grid-alt'></i> Dashboard
+                </button>
+                <button class="nav-btn" data-target="employees">
+                    <i class='bx bx-group'></i> Employees
+                </button>
+                <button class="nav-btn" data-target="salary">
+                    <i class='bx bx-wallet'></i> Salary
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="logout-btn">
+                    <i class='bx bx-log-out'></i> Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <h1 id="page-title">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class='bx bx-moon'></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- VIEWS -->
+            <div class="views-wrapper">
+
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="view-dashboard" class="view active">
+                    <div class="stats-grid">
+                        <div class="stat-card total">
+                            <div class="stat-icon"><i class='bx bx-objects-horizontal-left'></i></div>
+                            <div class="stat-details">
+                                <h3 id="stat-total">0</h3>
+                                <p>Total Employees</p>
+                            </div>
+                        </div>
+                        <div class="stat-card active">
+                            <div class="stat-icon"><i class='bx bx-user-check'></i></div>
+                            <div class="stat-details">
+                                <h3 id="stat-active">0</h3>
+                                <p>Active Employees</p>
+                            </div>
+                        </div>
+                        <div class="stat-card inactive">
+                            <div class="stat-icon"><i class='bx bx-user-minus'></i></div>
+                            <div class="stat-details">
+                                <h3 id="stat-inactive">0</h3>
+                                <p>Inactive Employees</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-illustration">
+                        <div class="glass-banner">
+                            <h2>Manage your workforce efficiently.</h2>
+                            <p>All your data, beautifully organized in one place.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. EMPLOYEES VIEW -->
+                <section id="view-employees" class="view">
+                    <div class="split-layout">
+                        <!-- Employee Form -->
+                        <div class="form-panel glass-panel">
+                            <h3>Employee Details</h3>
+                            <form id="employee-form">
+                                <div class="form-grid">
+                                    <div class="input-group">
+                                        <label>Employee ID</label>
+                                        <input type="text" id="emp-id" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Full Name</label>
+                                        <input type="text" id="emp-name" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Gender</label>
+                                        <div class="select-wrapper">
+                                            <select id="emp-gender">
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                                <option>Others</option>
+                                            </select>
+                                            <i class='bx bx-chevron-down'></i>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Contact Number</label>
+                                        <input type="text" id="emp-contact" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Position</label>
+                                        <div class="select-wrapper">
+                                            <select id="emp-position">
+                                                <option>Business Management</option>
+                                                <option>Front-End Developer</option>
+                                                <option>Back-End Developer</option>
+                                                <option>Data Administrator</option>
+                                                <option>UI/UX Design</option>
+                                            </select>
+                                            <i class='bx bx-chevron-down'></i>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Status</label>
+                                        <div class="select-wrapper">
+                                            <select id="emp-status">
+                                                <option>Active</option>
+                                                <option>Inactive</option>
+                                            </select>
+                                            <i class='bx bx-chevron-down'></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" id="btn-add-emp" class="btn btn-primary"><i class='bx bx-plus'></i> Add</button>
+                                    <button type="button" id="btn-update-emp" class="btn btn-info"><i class='bx bx-edit-alt'></i> Update</button>
+                                    <button type="button" id="btn-delete-emp" class="btn btn-danger"><i class='bx bx-trash'></i> Delete</button>
+                                    <button type="button" id="btn-clear-emp" class="btn btn-secondary"><i class='bx bx-reset'></i> Clear</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Employee Data Table -->
+                        <div class="table-panel glass-panel">
+                            <div class="table-header">
+                                <h3>Directory</h3>
+                                <div class="search-box">
+                                    <i class='bx bx-search'></i>
+                                    <input type="text" placeholder="Search employees...">
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table id="employees-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Gender</th>
+                                            <th>Contact</th>
+                                            <th>Position</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. SALARY VIEW -->
+                <section id="view-salary" class="view">
+                    <div class="split-layout">
+                        <!-- Salary Form -->
+                        <div class="form-panel glass-panel">
+                            <h3>Compensation</h3>
+                            <form id="salary-form">
+                                <div class="form-group">
+                                    <label>Employee ID</label>
+                                    <input type="text" id="sal-id" readonly class="readonly">
+                                </div>
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" id="sal-name" readonly class="readonly">
+                                </div>
+                                <div class="form-group">
+                                    <label>Position</label>
+                                    <input type="text" id="sal-position" readonly class="readonly">
+                                </div>
+                                <div class="form-group mb-large">
+                                    <label>Salary (₹)</label>
+                                    <div class="money-input">
+                                        <span class="currency">₹</span>
+                                        <input type="number" id="sal-amount" required>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" id="btn-update-salary" class="btn btn-primary w-full"><i class='bx bx-wallet-alt'></i> Update Salary</button>
+                                    <button type="button" id="btn-clear-salary" class="btn btn-secondary w-full"><i class='bx bx-reset'></i> Clear</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Salary Data Table -->
+                        <div class="table-panel glass-panel">
+                            <div class="table-header">
+                                <h3>Salary Records</h3>
+                            </div>
+                            <div class="table-container">
+                                <table id="salary-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Salary</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- AUTHENTICATION OVERLAY -->
+    <div id="auth-container" class="auth-wrapper">
+        <div class="auth-card glass-panel">
+            
+            <div class="auth-box login-box active">
+                <div class="auth-header">
+                    <div class="logo-icon"><i class='bx bx-hive'></i></div>
+                    <h2>Welcome Back</h2>
+                    <p>Enter your credentials to continue</p>
+                </div>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label>Username</label>
+                        <div class="input-icon">
+                            <i class='bx bx-user'></i>
+                            <input type="text" id="login-user" required placeholder="admin">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-icon">
+                            <i class='bx bx-lock-alt'></i>
+                            <input type="password" id="login-pass" required placeholder="••••••••">
+                            <button type="button" class="btn-icon toggle-pass"><i class='bx bx-hide'></i></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">Sign In</button>
+                </form>
+                <div class="auth-switch">
+                    <p>Don't have an account? <a href="#" id="link-to-register">Register</a></p>
+                </div>
+            </div>
+
+            <div class="auth-box register-box">
+                <div class="auth-header">
+                    <div class="logo-icon"><i class='bx bx-user-plus'></i></div>
+                    <h2>Create Account</h2>
+                    <p>Join our platform today</p>
+                </div>
+                <form id="register-form">
+                    <div class="input-group">
+                        <label>Username</label>
+                        <div class="input-icon">
+                            <i class='bx bx-user'></i>
+                            <input type="text" id="reg-user" required placeholder="Choose a username">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-icon">
+                            <i class='bx bx-lock-alt'></i>
+                            <input type="password" id="reg-pass" required placeholder="Choose a secure password">
+                            <button type="button" class="btn-icon toggle-pass"><i class='bx bx-hide'></i></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">Register</button>
+                </form>
+                <div class="auth-switch">
+                    <p>Already have an account? <a href="#" id="link-to-login">Sign In</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
